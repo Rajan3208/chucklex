@@ -1,0 +1,554 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ user_profile.user.username }} | ChuckleX</title>
+
+  <link rel="stylesheet" href="{% static 'css/main.min.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/color.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+  
+    .cover-photo {
+      height: 200px; /* Adjust this value to decrease the height of the cover image */
+      width: 100%;
+      object-fit: cover;
+    }
+    .user-avatar img {
+      height: 150px; /* Adjust this value to set the size of the profile image */
+      width: 150px;
+      border-radius: 50%;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+  }
+  
+  .main-content {
+      display: flex;
+      margin-top: 40px; /* Reduced gap */
+      margin-left: 250px; /* Ensure the main content doesn't overlap the sidebar */
+      padding: 20px;
+  }
+  
+  .sidebar {
+      position: fixed;
+      width: 250px;
+      top: 60px; /* Adjusted to account for header */
+      left: 0;
+      height: calc(100% - 60px); /* Adjusted to account for header */
+      background-color: #ABB1B4; /* Adjust color as needed */
+      border-right: 1px solid #ddd;
+      padding-top: 20px;
+      color: white; /* Ensure visibility of text and elements */
+      overflow-y: auto;
+      z-index: 999;
+  }
+  
+  .sidebar a, .sidebar .logo {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      display: flex;
+      align-items: center;
+  }
+  .sidebar a:hover {
+      background-color: #D3D3D3;
+      border-radius: 10px;
+  }
+
+  .sidebar .logo {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: 'Playfair Display', serif;
+  }
+  
+  .sidebar .logo span {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; /* This makes it bold */
+  }
+  .sidebar .logo i {
+      margin-right: 10px;
+      font-size: 24px; /* Adjust as needed */
+  }
+  
+  .sidebar i {
+      margin-right: 10px;
+      width: 20px; /* Ensures consistent width for icons */
+      text-align: center;
+  }
+  .sidebar a .profile-img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+  }
+  .sidebar a i,
+  .sidebar a .profile-img {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .sidebar a i {
+      font-size: 24px;
+  }
+  .header_inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.left-side {
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    margin-right: 20px;
+}
+
+.header-logo {
+    max-height: 30px; /* Adjust this value as needed */
+    width: auto;
+}
+
+.left-side input[type="text"] {
+    margin-right: 10px;
+}
+.left-side input[type="text"] {
+    width: 200px; 
+    height: 40px;
+    /* Adjust this value as needed */
+}
+.header-logo {
+    max-height: 40px;
+    max-width: 140px; /* Adjust these values as needed */
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.profile-table {
+      margin-top: 20px;
+      border-radius: 13px;  /* Changed border-radius to 13px */
+      width: 100%;
+      font-weight:600;
+      background-color: white;
+      border: 1px solid #ddd; /* Updated border color */
+    }    
+    .profile-table td {
+      padding: 10px;
+      font-size: 18px;
+      border-bottom: 1px solid #ddd;
+      color: black; /* Ensure text color is black */
+    }
+    .profile-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .profile-info-row div {
+      font-size: 18px;
+      color: black;
+    }
+    .profile-info-container {
+      width: 85%; /* Adjusted width */
+      margin: 20px auto; /* Centered and added margin to move down */
+    }
+    .profile-tabs {
+      border-top: 1px solid #dbdbdb;
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+  }
+  .profile-tabs .tab {
+      margin: 0 20px;
+      padding: 15px 0;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #8e8e8e;
+      cursor: pointer;
+      position: relative;
+  }
+  .profile-tabs .tab.active {
+      color: #262626;
+  }
+  .profile-tabs .tab.active::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #262626;
+  }
+  .tab-content {
+      display: none;
+      padding: 20px 0;
+  }
+  .tab-content.active {
+      display: block;
+  }
+    .feature-photo {
+      margin-bottom: 20px; /* Added margin-bottom to create gap */
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+  }
+  .modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+}
+.nav-icons {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1001;
+}
+.nav-icons i {
+    font-size: 3rem;
+    color: #fff;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+  </style>
+
+</head>
+<body>
+  <header>
+    <div class="header_inner">
+      <form action="/search/" method="POST">
+        {% csrf_token %}
+        <div class="left-side">
+          <div id="logo">
+            <img src="{% static 'images/chucklexlogo.png' %}" alt="ChuckleX" class="header-logo">
+          </div>
+          <input type="text" name="username" placeholder="Search for username..">&nbsp; &nbsp;
+          <button type="submit"><i class="fa fa-search fa-1x"></i></button>
+        </div>
+      </form>
+      <div class="right-side lg:pr-4">
+        <a href="#" class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white">
+          <ion-icon name="add-circle" class="-mb-1 mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Upload
+        </a>
+        <a href="#">
+          <img src="{{ user_profile.profileimg.url }}" class="header-avatar" alt="">
+        </a>
+      </div>
+    </div>
+  </header>
+  
+  <div class="theme-layout">
+    <aside class="sidebar">
+      <div class="logo">
+        <span>ChuckleX</span>
+      </div>
+      <a href="/"><i class="fas fa-home"></i> Home</a>
+      <a href="/search"><i class="fas fa-search"></i> Search</a>
+      <a href="/explore"><i class="fas fa-compass"></i> Trending</a>
+      <a href="/messages"><i class="fas fa-envelope"></i> Messages</a>
+      <a href="/notifications"><i class="fas fa-bell"></i> Notifications</a>
+      <a href="/create"><i class="fas fa-plus-circle"></i> Create</a>
+      <a href="{% url 'profile' user.username %}">
+        <img src="{{ user_profile.profileimg.url }}" alt="Profile" class="profile-img"> Profile
+    </a>
+      <a href="/settings"><i class="fas fa-cog"></i> Settings</a>
+    </aside>
+
+    <div class="main-content">
+      <section>
+        <div class="feature-photo">
+          <div class="cover-photo-container">
+            <img src="{{ user_profile.coverimg.url }}" alt="Cover Photo" class="cover-photo">
+          </div>
+          <div class="container-fluid">
+            <div class="row merged">
+              <div class="col-lg-3 col-sm-4">
+                <div class="user-avatar">
+                  <figure>
+                    <img src="{{ user_profile.profileimg.url }}" alt="" />
+                  </figure>
+                </div>
+                <form action="/follow/" method="POST" style="text-align: center; margin: 20px 0;">
+                  {% csrf_token %}
+                  <input type="hidden" value="{{ user.username }}" name="follower"/>
+                  <input type="hidden" value="{{ user_object.username }}" name="user"/>
+                  {% if user_object.username == user.username %}
+                    <a href="/settings" data-ripple="">Account Settings</a>
+                  {% else %}
+                    <button type="submit" style="background-color: #ffc0cb; border: #ffc0cb">
+                      {{ button_text }}
+                    </button>
+                  {% endif %}
+                </form>
+                <div class="profile-info-container">
+                  <table class="profile-table">
+                    <tr>
+                      <td>{{ user_profile.user.username }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="profile-info-row">
+                          <span style="color: black; font-size: 15px"><b>{{ user_post_length }} {% if user_post_length == 1 %}Post{% else %}Posts{% endif %}</b></span>
+                          <span style="color: black; font-size: 15px"><b>{{ user_followers }} {% if user_followers == 1 %}follower{% else %}followers{% endif %}</b></span>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>{{ user_profile.location }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ user_profile.bio }}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="col-lg-9 col-sm-8">
+                <div class="central-meta">
+                  <div class="profile-tabs">
+                    <div class="tab active" onclick="openTab(event, 'Posts')">
+                      <i class="fas fa-th"></i> Posts
+                    </div>
+                    <div class="tab" onclick="openTab(event, 'Saved')">
+                      <i class="fas fa-bookmark"></i> Saved
+                    </div>
+                    <div class="tab" onclick="openTab(event, 'Tagged')">
+                      <i class="fas fa-user-tag"></i> Tagged
+                    </div>
+                  </div>
+
+                  <div id="Posts" class="tab-content active">
+                    <ul class="photos">
+                      {% for post in user_posts %}
+                      <li>
+                        <a href="#" onclick="openModal('{{ post.id }}'); return false;">
+                          <img src="{{ post.image }}" style="height: 250px; width: 300px" alt="" />
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+
+                  <div id="Saved" class="tab-content">
+                    <ul class="photos">
+                      {% for saved_post in saved_posts %}
+                      <li>
+                        <a class="strip" href="{{ saved_post.post.image.url }}" title="" data-strip-group="mygroup" data-strip-group-options="loop: false">
+                          <img src="{{ saved_post.post.image.url }}" style="height: 250px; width: 300px" alt="" />
+                        </a>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+
+                  <div id="Tagged" class="tab-content">
+                    <p>Tagged posts will be displayed here.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modal -->
+    <div id="postModal" class="modal">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="nav-icons">
+        <i class="fas fa-chevron-left" onclick="navigatePost('prev')"></i>
+        <i class="fas fa-chevron-right" onclick="navigatePost('next')"></i>
+      </div>
+      <div class="modal-content">
+        <img id="modalImage" src="" alt="Post Image" class="modal-image">
+        <div class="modal-details">
+          <div id="modalUser"></div>
+          <p id="modalCaption"></p>
+          <p id="modalLikes"></p>
+          <p id="modalTime"></p>
+          <div id="modalComments"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tab-content");
+      for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].classList.remove("active");
+      }
+      tablinks = document.getElementsByClassName("tab");
+      for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].classList.remove("active");
+      }
+      document.getElementById(tabName).classList.add("active");
+      evt.currentTarget.classList.add("active");
+  }
+
+
+ function openModal(postId) {
+        fetch(`/api/post/${postId}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('modalImage').src = data.image_url;
+                document.getElementById('modalUser').innerHTML = `
+                    <img src="${data.profile_image}" alt="${data.user}" style="width: 30px; height: 30px; border-radius: 50%;">
+                    <span>${data.user}</span>
+                `;
+                document.getElementById('modalCaption').textContent = data.caption;
+                document.getElementById('modalLikes').textContent = `${data.likes_count} likes`;
+                document.getElementById('modalTime').textContent = data.created_at;
+                
+                const commentsHtml = data.comments.map(comment => 
+                    `<p><strong>${comment.username}</strong>: ${comment.text}</p>`
+                ).join('');
+                document.getElementById('modalComments').innerHTML = commentsHtml;
+                
+                document.getElementById('postModal').style.display = 'block';
+            });
+    }
+    function openModal(postId) {
+      fetch(`/api/post/${postId}/`)
+          .then(response => response.json())
+          .then(data => {
+              updateModalContent(data);
+              document.getElementById('postModal').style.display = 'block';
+              currentPostIndex = posts.findIndex(post => post.id === postId);
+              updateNavigationVisibility();
+          });
+  }
+
+  function updateNavigationVisibility() {
+      const prevIcon = document.querySelector('.nav-icons .fa-chevron-left');
+      const nextIcon = document.querySelector('.nav-icons .fa-chevron-right');
+      
+      prevIcon.style.visibility = currentPostIndex > 0 ? 'visible' : 'hidden';
+      nextIcon.style.visibility = currentPostIndex < posts.length - 1 ? 'visible' : 'hidden';
+  }
+
+    function closeModal() {
+        document.getElementById('postModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('postModal')) {
+            closeModal();
+        }
+    }
+    let currentPostIndex = 0;
+    let posts = [];
+
+    function openModal(postId) {
+        fetch(`/api/post/${postId}/`)
+            .then(response => response.json())
+            .then(data => {
+                updateModalContent(data);
+                document.getElementById('postModal').style.display = 'block';
+                currentPostIndex = posts.findIndex(post => post.id === postId);
+            });
+    }
+
+    function closeModal() {
+        document.getElementById('postModal').style.display = 'none';
+    }
+
+    function updateModalContent(data) {
+        document.getElementById('modalImage').src = data.image_url;
+        document.getElementById('modalUser').innerHTML = `
+            <img src="${data.profile_image}" alt="${data.user}" style="width: 30px; height: 30px; border-radius: 50%;">
+            <span>${data.user}</span>
+        `;
+        document.getElementById('modalCaption').textContent = data.caption;
+        document.getElementById('modalLikes').textContent = `${data.likes_count} likes`;
+        document.getElementById('modalTime').textContent = data.created_at;
+        
+        const commentsHtml = data.comments.map(comment => 
+            `<p><strong>${comment.username}</strong>: ${comment.text}</p>`
+        ).join('');
+        document.getElementById('modalComments').innerHTML = commentsHtml;
+    }
+
+    function navigatePost(direction) {
+        if (direction === 'next' && currentPostIndex < posts.length - 1) {
+            currentPostIndex++;
+        } else if (direction === 'prev' && currentPostIndex > 0) {
+            currentPostIndex--;
+        }
+        openModal(posts[currentPostIndex].id);
+    }
+
+    // Fetch all posts when the page loads
+    fetch('/api/user_posts/')
+        .then(response => response.json())
+        .then(data => {
+            posts = data;
+        });
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('postModal')) {
+            closeModal();
+        }
+    }
+  </script>
+
+  <script src="{% static 'js/main.min.js' %}"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

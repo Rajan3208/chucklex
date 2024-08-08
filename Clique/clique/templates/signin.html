@@ -1,0 +1,240 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="{% static 'assets/images/favicon.png' %}"
+      rel="icon"
+      type="image/png"
+    />
+    <title>Sign in - ChuckleX</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      .input.text-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .google-button {
+        display: flex;
+        align-items: center;
+        background-color: #4285f4; /* Google blue */
+        color: white;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Adding a bit of spacing between the icon and the text */
+      .google-button i {
+        margin-right: 10px;
+      }
+
+      /* Changing background color on hover */
+      .google-button:hover {
+        background-color: #357ae8;
+      }
+
+      /* Adding focus style */
+      .google-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.5);
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100">
+    <div id="wrapper" class="flex flex-col justify-between h-screen">
+      <!-- header-->
+      <div class="bg-white py-4 shadow dark:bg-gray-800">
+        <div class="max-w-6xl mx-auto">
+          <div class="flex items-center lg:justify-between justify-around">
+            <a href="trending.html">
+              <b><h1 style="font-size: 1.5rem">ChuckleX</h1></b>
+            </a>
+            <div
+              class="capitalize flex font-semibold hidden lg:block my-2 space-x-3 text-center text-sm"
+            >
+              <a
+                href="/signup"
+                class="bg-pink-500 pink-500 px-6 py-3 rounded-md shadow text-white"
+                >Register</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:p-12 max-w-md max-w-xl lg:my-0 my-12 mx-auto p-6 space-y-">
+        <h1 class="lg:text-3xl text-xl font-semibold mb-6">Sign In</h1>
+        <style>
+          h5 {
+            color: red;
+          }
+        </style>
+
+        {% for message in messages %}
+        <h5>{{ message }}</h5>
+        {% endfor %}
+        <form action="" method="POST">
+          {% csrf_token %}
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            class="bg-gray-200 mb-2 shadow-none dark:bg-gray-800"
+            style="border: 1px solid #d3d5d8 !important"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            class="bg-gray-200 mb-2 shadow-none dark:bg-gray-800"
+            style="border: 1px solid #d3d5d8 !important"
+          />
+
+          <button
+            type="submit"
+            class="bg-gradient-to-br from-pink-500 py-3 rounded-md text-white text-xl to-red-400 w-full"
+          >
+            Login
+          </button>
+          &nbsp;
+          <div
+            style="display: flex; align-items: center; justify-content: center"
+          >
+            <div
+              style="
+                flex-grow: 1;
+                height: 1px;
+                background-color: black;
+                margin-right: 10px;
+              "
+            ></div>
+            <span> or </span>
+            <div
+              style="
+                flex-grow: 1;
+                height: 1px;
+                background-color: black;
+                margin-left: 10px;
+              "
+            ></div>
+          </div>
+          <div class="flex justify-between my-4">
+            <span style="color: blue; font-size: 13px"
+              ><a href="#">Forgot Your Password?</a></span
+            >
+          </div>
+          <div class="text-center mt-5 space-x-2">
+            <p class="text-base">
+              Not registered?
+              <span style="color: blue"
+                ><a href="/signup">Create an account</a></span
+              >
+            </p>
+          </div>
+        </form>
+      </div>
+      <div class="input text-center">
+        <button id="google-login-btn" class="google-button">
+          <i class="fab fa-google"></i> Login with Google
+        </button>
+      </div>
+
+      <!-- Footer -->
+      <div class="lg:mb-5 py-3 uk-link-reset">
+        <div
+          class="flex flex-col items-center justify-between lg:flex-row max-w-6xl mx-auto lg:space-y-0 space-y-3"
+        >
+          <div class="flex space-x-2 text-gray-700 uppercase">
+            <a href="#">About</a>
+            <a href="#">Help</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+          </div>
+          <p class="capitalize">© copyright 2024 by ChuckleX</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+      import {
+        getAuth,
+        GoogleAuthProvider,
+        signInWithPopup,
+      } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCiOeOL1UlS3R1_Fh7ZVYavSN1hSJTJvUo",
+        authDomain: "chucklex-login.firebaseapp.com",
+        projectId: "chucklex-login",
+        storageBucket: "chucklex-login.appspot.com",
+        messagingSenderId: "281898734329",
+        appId: "1:281898734329:web:b6c81357de72a7020b8828",
+        measurementId: "G-2GHHY4VDHQ",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const auth = getAuth();
+      auth.languageCode = "en";
+
+      const provider = new GoogleAuthProvider();
+
+      document
+        .getElementById("google-login-btn")
+        .addEventListener("click", function () {
+          console.log("Google login button clicked");
+          signInWithPopup(auth, provider)
+            .then((result) => {
+              console.log("Login successful:", result);
+              const credential =
+                GoogleAuthProvider.credentialFromResult(result);
+              const user = result.user;
+              console.log("User:", user);
+              window.location.href = "#";
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              const email = error.customData.email;
+              const credential = GoogleAuthProvider.credentialFromError(error);
+              console.error(
+                `Error [${errorCode}]: ${errorMessage}, Email: ${email}, Credential: ${credential}`
+              );
+            });
+        });
+    </script>
+
+    <!-- Custom Scripts -->
+    <script type="module" src="{% static 'path/to/script1.js' %}"></script>
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+  </body>
+</html>

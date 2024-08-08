@@ -1,0 +1,313 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'image/chucklexlogo.png' %} " rel="icon" type="image/png">
+    <title>ChuckleX</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: white; /* Ensure background color */
+        }
+
+        .main-content {
+            display: flex;
+            margin-top: 60px; /* Adjust based on header height */
+            margin-left: 250px; /* Ensure the main content doesn't overlap the sidebar */
+            padding: 20px;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            top: 60px; /* Adjusted to account for header */
+            left: 0;
+            height: calc(100% - 60px); /* Adjusted to account for header */
+            background-color: #ABB1B4; /* Adjust color as needed */
+            border-right: 1px solid #ddd;
+            padding-top: 20px;
+            color: white; /* Ensure visibility of text and elements */
+            overflow-y: auto;
+            z-index: 999;
+        }
+        
+        .sidebar a, .sidebar .logo {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar a:hover {
+            background-color: #D3D3D3;
+            border-radius: 10px;
+        }
+    
+        .sidebar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .sidebar .logo span {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700; /* This makes it bold */
+        }
+        .sidebar .logo i {
+            margin-right: 10px;
+            font-size: 24px; /* Adjust as needed */
+        }
+        
+        .sidebar i {
+            margin-right: 10px;
+            width: 20px; /* Ensures consistent width for icons */
+            text-align: center;
+        }
+        .sidebar a .profile-img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .sidebar a i,
+        .sidebar a .profile-img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .sidebar a i {
+            font-size: 24px;
+        }
+        .popular-pages-container {
+            position: relative;
+            height: 100vh; /* Adjust this value as needed */
+        }
+        .sticky-popular-pages {
+            position: sticky;
+            top: 20px; /* Adjust this value to set the distance from the top of the viewport */
+            max-height: calc(100vh - 40px); /* Adjust this value to ensure it fits within the viewport */
+            overflow-y: auto;
+        }
+        .header_inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        
+        .left-side {
+            display: flex;
+            align-items: center;
+        }
+        
+        #logo {
+            margin-right: 20px;
+        }
+        
+        .header-logo {
+            max-height: 30px; /* Adjust this value as needed */
+            width: auto;
+        }
+        
+        .left-side input[type="text"] {
+            margin-right: 10px;
+        }
+        .left-side input[type="text"] {
+            width: 200px; 
+            height: 40px;
+            /* Adjust this value as needed */
+        }
+        .header-logo {
+            max-height: 40px;
+            max-width: 140px; /* Adjust these values as needed */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header_inner">
+        <form action="/search/" method="POST">
+            {% csrf_token %}
+            <div class="left-side">
+                <!-- Logo -->
+                <div id="logo">
+                    <img src="{% static 'images/chucklexlogo.png' %}" alt="ChuckleX" class="header-logo">
+                </div>
+                <input type="text" name="username" placeholder="Search for username..">&nbsp; &nbsp;
+                <button type="submit"><i class="fa fa-search fa-1x"></i></button>
+            </div>
+        </form>
+        <div class="right-side lg:pr-4">
+            <!-- upload -->
+               
+               <a href="#" class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white">
+                <ion-icon name="add-circle" class="-mb-1 mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Upload
+            </a>
+            <!-- upload dropdown box -->
+            <div uk-dropdown="pos: top-right;mode:click ; animation: uk-animation-slide-bottom-small" class="header_dropdown">
+                <!-- notivication header -->
+                <div class="px-4 py-3 -mx-5 -mt-4 mb-5 border-b">
+                    <h4>Upload </h4>
+                </div>
+                <!-- notification contents -->
+                <div class="flex justify-center flex-center text-center">
+                    <div class="flex flex-col choose-upload text-center">
+                        <div class="bg-gray-100 border-2 border-dashed flex flex-col h-24 items-center justify-center relative w-full rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
+                                <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z" />
+                                <path d="M9 13h2v5a1 1 0 11-2 0v-5z" />
+                            </svg>
+                        </div>
+                        <form action="/upload/" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <p class="my-3 leading-6"> Upload <br>
+                            </p>
+                            <div>
+                                <input type="file" name="image_upload">
+                                <textarea class="button soft-warning small" name="caption" placeholder="write caption..."></textarea>
+                                <br>
+                                <button class="button bg-blue-700" type="submit">Upload</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="px-4 py-3 -mx-5 -mb-4 mt-5 border-t text-sm">
+                    Your image size Must be Maxmium 999MB
+                </div>
+            </div>
+            <!-- profile -->
+            <a href="#">
+                <img src="{{user_profile.profileimg.url}}" class="header-avatar" alt="">
+            </a>
+            <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
+                <ul>
+                    <li><a href="{% url 'profile' user.username %}"> Your Profile</a> </li>
+                    <li><a href="/settings"> Account Settings </a> </li>
+                    <li><a href="logout"> Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="main-content">
+    <!-- Aside bar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span>ChuckleX</span>
+        </div>
+        <a href="/"><i class="fas fa-home"></i><span style="color:#ABB1B4; ">..</span>Home</a>
+        <a href="/search"><i class="fas fa-search"></i><span style="color:#ABB1B4; ">..</span>Search</a>
+        <a href="/explore"><i class="fas fa-compass"></i><span style="color:#ABB1B4; ">..</span>Trending</a>
+        <a href="/messages"><i class="fas fa-envelope"></i><span style="color:#ABB1B4; ">..</span> Messages</a>
+        <a href="/notifications"><i class="fas fa-bell"></i><span style="color:#ABB1B4; ">..</span> Notifications</a>
+        <a href="/create"><i class="fas fa-plus-circle"></i> <span style="color:#ABB1B4; ">..</span>Create</a>
+        <a href="{% url 'profile' user.username %}">
+            <img src="{{ user_profile.profileimg.url }}" alt="Profile" class="profile-img"> Profile
+        </a>
+        <a href="/settings"><i class="fas fa-cog"></i> <span style="color:#ABB1B4; ">..</span>Settings</a>
+    </aside>
+
+    <div class="container m-auto">
+        <h1 class="text-2xl leading-none text-gray-900 tracking-tight mt-3"><a href="/">Home</a>/ Account Setting for <b>{{user.username}}</b> </h1>
+        <br>
+        <hr>
+        <div class="grid lg:grid-cols-3 mt-12 gap-8">
+            <div>
+                <h3 class="text-xl mb-2">General</h3>
+                <p></p>
+            </div>
+            <div class="bg-white rounded-md lg:shadow-lg shadow col-span-2">
+                <form action="" method="POST" enctype="multipart/form-data"> 
+                    {% csrf_token %}
+                    <div class="grid grid-cols-2 gap-3 lg:p-6 p-4">
+                        <div class="col-span-2">
+                            <label for="image">Profile Image</label>
+                            <input type="file" name="image" accept="image/*" class="shadow-none bg-gray-100">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="cover_image">Cover Image</label>
+                            <p class="text-sm text-gray-500">Image will be cropped to fit 1128x191 aspect ratio. Larger images are recommended for better quality.</p>
+                            <input type="file" name="cover_image" accept="image/*" class="shadow-none bg-gray-100">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="bio">Bio</label>  
+                            <textarea id="bio" name="bio" rows="3" class="shadow-none bg-gray-100">{{user_profile.bio}}</textarea>
+                        </div> 
+                        <div class="col-span-2">
+                            <label for="location">Location</label>
+                            <input type="text" name="location" value="{{user_profile.location}}" class="shadow-none bg-gray-100">
+                        </div>
+                    </div>
+                    <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                        <button class="p-2 px-4 rounded bg-gray-50 text-red-500"><a href="/">Cancel</a></button>
+                        <button type="submit" class="button bg-blue-700">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'assets/js/tippy.all.min.js' %}"></script>  
+<script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'assets/js/uikit.js' %}"></script>
+<script src="{% static 'assets/js/simplebar.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+</body>
+</html>
+
+
+<a href="#" class="flex items-center space-x-2" onclick="sharePostToWhatsApp('{{post.id}}', '{{post.image.url}}')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#25D366">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+    </svg>
+</a>
+ <!--saved_post--> 
+<a href="#" class="flex items-center space-x-2" onclick="savePost('{{post.id}}')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+    </svg>
+</a>
+
+
+
+<!-- Download button -->
+<a href="{{post.image.url}}" class="flex items-center space-x-2" download>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="25" height="25" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16">
+        <g fill="currentColor">
+            <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/>
+        </g>
+    </svg>
+</a>

@@ -1,0 +1,629 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'image/chucklexlogo.png' %} " rel="icon" type="image/png">
+    <title>ChuckleX</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Ensure header is above the sidebar */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        
+        .main-content {
+            display: flex;
+            margin-top: 40px; /* Reduced gap */
+            margin-left: 250px; /* Ensure the main content doesn't overlap the sidebar */
+            padding: 20px;
+        }
+        
+        .sidebar {
+            position: fixed;
+            width: 250px;
+            top: 60px; /* Adjusted to account for header */
+            left: 0;
+            height: calc(100% - 60px); /* Adjusted to account for header */
+            background-color: #ABB1B4; /* Adjust color as needed */
+            border-right: 1px solid #ddd;
+            padding-top: 20px;
+            color: white; /* Ensure visibility of text and elements */
+            overflow-y: auto;
+            z-index: 999;
+        }
+        
+        .sidebar a, .sidebar .logo {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar a:hover {
+            background-color: #D3D3D3;
+            border-radius: 10px;
+        }
+    
+        .sidebar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .sidebar .logo span {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700; /* This makes it bold */
+        }
+        .sidebar .logo i {
+            margin-right: 10px;
+            font-size: 24px; /* Adjust as needed */
+        }
+        
+        .sidebar i {
+            margin-right: 10px;
+            width: 20px; /* Ensures consistent width for icons */
+            text-align: center;
+        }
+        .sidebar a .profile-img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .sidebar a i,
+        .sidebar a .profile-img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .sidebar a i {
+            font-size: 24px;
+        }
+        .popular-pages-container {
+            position: relative;
+            height: 10vh; /* Adjust this value as needed */
+        }
+    
+        .sticky-popular-pages {
+            position: sticky;
+            top: 10px; /* Adjusted this value to set the distance from the top of the viewport */
+            max-height: calc(100vh - 40px); /* Adjust this value to ensure it fits within the viewport */
+            overflow-y: auto;
+        }
+        .stories-scroll {
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .stories-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .story-item {
+            width: 70px;
+        } 
+        .add-story-btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8.5px 17px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 15px;
+            margin: 4px 2px;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 5px;
+        }  
+        .story-preview {
+            position: relative;
+        }
+        .story-preview video,
+        .story-preview img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        } 
+        .header_inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+        
+        .left-side {
+            display: flex;
+            align-items: center;
+        }
+        
+        #logo {
+            margin-right: 20px;
+        }
+        
+        .header-logo {
+            max-height: 30px; /* Adjust this value as needed */
+            width: auto;
+        }
+        
+        .left-side input[type="text"] {
+            margin-right: 10px;
+        }
+        .left-side input[type="text"] {
+            width: 200px; 
+            height: 40px;
+            /* Adjust this value as needed */
+        }
+        .header-logo {
+            max-height: 40px;
+            max-width: 140px; /* Adjust these values as needed */
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+    </style>
+    
+    
+</head>
+
+<body>
+
+    <header>
+        <div class="header_inner">
+            <form action="/search/" method="POST">
+                {% csrf_token %}
+                <div class="left-side">
+                    <!-- Logo -->
+                    <div id="logo">
+                        <img src="{% static 'images/chucklexlogo.png' %}" alt="ChuckleX" class="header-logo">
+                    </div>
+                    <input type="text" name="username" placeholder="Search for username..">&nbsp; &nbsp;
+                    <button type="submit"><i class="fa fa-search fa-1x"></i></button>
+                </div>
+            </form>
+            <div class="right-side lg:pr-4">
+
+                <!-- Story button -->
+                <a href="#" class="add-story-btn" uk-toggle="target: #add-story-modal">
+                    <i class="fas fa-plus-circle"></i> Add Story
+                </a>  
+
+                <!-- upload -->
+                <a href="#" class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white">
+                    <ion-icon name="add-circle" class="-mb-1 mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Upload
+                </a>
+                <!-- upload dropdown box -->
+                <div uk-dropdown="pos: top-right;mode:click ; animation: uk-animation-slide-bottom-small" class="header_dropdown">
+                    <!-- notivication header -->
+                    <div class="px-4 py-3 -mx-5 -mt-4 mb-5 border-b">
+                        <h4>Upload </h4>
+                    </div>
+                    <!-- notification contents -->
+                    <div class="flex justify-center flex-center text-center">
+                        <div class="flex flex-col choose-upload text-center">
+                            <div class="bg-gray-100 border-2 border-dashed flex flex-col h-24 items-center justify-center relative w-full rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
+                                    <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z" />
+                                    <path d="M9 13h2v5a1 1 0 11-2 0v-5z" />
+                                </svg>
+                            </div>
+                            <form action="/upload/" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <p class="my-3 leading-6"> Upload <br>
+                                </p>
+                                <div>
+                                    <input type="file" name="image_upload">
+                                    <textarea class="button soft-warning small" name="caption" placeholder="write caption..."></textarea>
+                                    <br>
+                                    <button class="button bg-blue-700" type="submit">Upload</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+
+                    <div class="px-4 py-3 -mx-5 -mb-4 mt-5 border-t text-sm">
+                        Your image size must be less than 2MB
+                    </div>
+                </div>
+                <!-- profile -->
+                <a href="#">
+                    <img src="{{user_profile.profileimg.url}}" class="header-avatar" alt="">
+                </a>
+                <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
+                    <ul>
+                        <li><a href="{% url 'profile' user.username %}"> Your Profile</a> </li>
+                        <li><a href="/settings"> Account Settings </a> </li>
+                        <li><a href="logout"> Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <div id="add-story-modal" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Add Story</h2>
+            <form action="{% url 'create_story' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="uk-margin">
+                    <label class="uk-form-label" for="story-content">Choose Image or Video:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" type="file" id="story-content" name="story_content" accept="image/*,video/*" required>
+                    </div>
+                </div>
+                <button class="uk-button uk-button-primary" type="submit">Add Story</button>
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <div class="main-content">
+        <!-- Aside bar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span>ChuckleX</span>
+            </div>
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/search"><i class="fas fa-search"></i> Search</a>
+            <a href="/explore"><i class="fas fa-compass"></i> Trending</a>
+            <a href="/messages"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="/notifications"><i class="fas fa-bell"></i> Notifications</a>
+            <a href="/create"><i class="fas fa-plus-circle"></i> Create</a>
+            <a href="{% url 'profile' user.username %}">
+                <img src="{{ user_profile.profileimg.url }}" alt="Profile" class="profile-img"> Profile
+            </a>
+            <a href="/settings"><i class="fas fa-cog"></i> Settings</a>
+        </aside>
+    
+            <div class="container m-auto">
+                <div class="stories-container mb-5">
+                    <div class="stories-scroll flex overflow-x-auto space-x-4">
+                        {% for story in active_stories %}
+                        <div class="story-item flex-shrink-0" data-story-id="{{ story.id }}">
+                            <a href="#" class="block">
+                                <div class="bg-gradient-to-tr from-yellow-600 to-pink-600 p-1 rounded-full">
+                                    <div class="story-preview bg-gray-200 border border-white rounded-full w-16 h-16 overflow-hidden">
+                                        {% if story.content.url|lower|slice:"-4:" == ".mp4" %}
+                                            <video src="{{ story.content.url }}" class="w-full h-full object-cover"></video>
+                                        {% else %}
+                                            <img src="{{ story.content.url }}" class="w-full h-full object-cover" alt="{{ story.user.username }}'s story">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <span class="text-xs text-center block mt-1">{{ story.user.username }}</span>
+                            </a>
+                        </div>
+                    {% empty %}
+                        <p>No active stories</p>
+                    {% endfor %}
+                    
+                    </div>
+                </div>
+                
+               
+
+                <!--<h1 class="lg:text-2xl text-lg font-extrabold leading-none text-gray-900 tracking-tight mb-5"> Feed </h1> !-->
+
+                <div class="lg:flex justify-center lg:space-x-10 lg:space-y-0 space-y-5">
+
+                    <!-- left sidebar-->
+                    <div class="space-y-5 flex-shrink-0 lg:w-7/12">
+
+                        <!-- post 1-->
+
+                        {% for post in posts %}
+    <div class="bg-white shadow rounded-md -mx-2 lg:mx-0">
+        <!-- post header-->
+        <div class="flex justify-between items-center px-4 py-3">
+            <div class="flex flex-1 items-center space-x-4">
+                <a href="#">
+                    <div class="bg-gradient-to-tr from-yellow-600 to-pink-600 p-0.5 rounded-full">  
+                        <img src="{{ post.user_profile.profileimg.url }}" class="bg-gray-200 border border-white rounded-full w-8 h-8">
+                    </div>
+                </a>
+                <span class="block capitalize font-semibold">
+                    <a href="/profile/{{ post.user }}">@{{ post.user }}</a>
+                </span>
+            </div>
+
+
+                                
+                              <div>
+                                <a href="#"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 "></i> </a>
+                                <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100  " uk-drop="mode: hover;pos: top-right">
+                              
+                                    <ul class="space-y-1">
+                                      
+                                      <li> 
+                                          <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+                                           <i class="uil-edit-alt mr-1"></i>  Edit Post 
+                                          </a> 
+                                      </li>
+                                      <li> 
+                                          <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
+                                           <i class="uil-comment-slash mr-1"></i>   Disable comments
+                                          </a> 
+                                      </li> 
+                                      
+                                      <li>
+                                        <hr class="-mx-2 my-2 ">
+                                      </li>
+                                      <li> 
+                                          <a href="#" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md ">
+                                           <i class="uil-trash-alt mr-1"></i>  Delete
+                                          </a> 
+                                      </li>
+                                    </ul>
+                                
+                                </div>
+                              </div>
+                            </div>
+    
+                            <div uk-lightbox>
+                                <a href="{{post.image.url}}">  
+                                    <img src="{{post.image.url}}" alt="">
+                                </a>
+                            </div>
+                            
+    
+                            <div class="py-3 px-4 space-y-3"> 
+                               
+                                <div class="flex space-x-4 lg:font-bold">
+                                    <a href="/like-post?post_id={{post.id}}" class="flex items-center space-x-2">
+                                        <div class="p-2 rounded-full text-black">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
+                                                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                                            </svg>
+                                            {% if post.no_of_likes == 0 %}
+                                       <p>No Likes</p>
+                                       {% elif post.no_of_likes == 1 %}
+                                       <p>Liked by {{ post.no_of_likes }} person</p>
+                                       {% else %}
+                                       <p>Liked by {{ post.no_of_likes }} people</p>
+                                       {% endif %}
+
+                                        </div>
+                                        
+                                    </a>                               
+                                    <div class="flex items-center space-x-2 flex-1 justify-end">
+                                        <!-- Share button -->
+                                        <a href="#" class="flex items-center space-x-2" onclick="sharePostToWhatsApp('{{post.id}}', '{{post.image.url}}')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="#25D366">
+                                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                                            </svg>
+                                        </a>
+
+                                        <a href="#" class="flex items-center space-x-2" onclick="savePost('{{post.id}}')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                        </a>
+                                        
+                                        
+                                        
+                                        <!-- Download button -->
+                                        <a href="{{post.image.url}}" class="flex items-center space-x-2" download>
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="25" height="25" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16">
+                                                <g fill="currentColor">
+                                                    <path d="M8.5 1.5A1.5 1.5 0 0 1 10 0h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h6c-.314.418-.5.937-.5 1.5v6h-2a.5.5 0 0 0-.354.854l2.5 2.5a.5.5 0 0 0 .708 0l2.5-2.5A.5.5 0 0 0 10.5 7.5h-2v-6z"/>
+                                                </g>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    
+                                </div>
+                                
+
+                                    <p>
+                                        <a href="/profile/{{post.user}}"><strong>{{post.user}}</strong></a> {{post.caption}}
+                                    </p>
+
+                                <div class="bg-gray-100 bg-gray-100 rounded-full rounded-md relative ">
+                                    <input type="text" placeholder="post a comment" class="bg-transparent max-h-10 shadow-none">
+                                    
+                                </div>
+    
+                            </div>
+    
+                        </div>
+                        {% endfor %}
+    
+                       
+
+                    </div>
+
+                    <!-- right sidebar-->
+                    <div class="popular-pages-container lg:w-5/12">
+
+                        <div class="bg-white  shadow-md rounded-md overflow-hidden sticky-popular-pages">
+
+                            <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
+                                <h2 class="font-semibold text-lg ">Popular Pages</h2>
+                                
+                            </div>
+                           
+                            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4">
+                                {% for suggestion in suggestions_username_profile_list %}
+                                    <div class="flex items-center justify-between py-3">
+                                        <div class="flex flex-1 items-center space-x-4">
+                                            <a href="{% url 'profile' suggestion.profile.user.username %}">
+                                                <img src="{{ suggestion.profile.profileimg.url }}" class="bg-gray-200 rounded-full w-10 h-10">
+                                            </a>
+                                            <div class="flex flex-col">
+                                                <span class="block capitalize font-semibold"> {{ suggestion.profile.user.username }} </span>
+                                                <span class="block capitalize text-sm"> {{ suggestion.followers_count }} follower </span>
+                                            </div>
+                                        </div>
+                                        <a href="{% url 'profile' suggestion.profile.user.username %}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600"> View User </a>
+                                    </div>
+                                {% endfor %}
+
+
+
+                            </div>
+                            
+                                    
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    </div>
+
+                </div>               
+          
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <script>
+        
+
+        function viewStory(storyId) {
+            fetch(`/view_story/${storyId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    const modal = document.createElement('div');
+                    modal.style.position = 'fixed';
+                    modal.style.top = '0';
+                    modal.style.left = '0';
+                    modal.style.width = '100%';
+                    modal.style.height = '100%';
+                    modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+                    modal.style.display = 'flex';
+                    modal.style.justifyContent = 'center';
+                    modal.style.alignItems = 'center';
+                    modal.style.zIndex = '1000';
+        
+                    const content = document.createElement('div');
+                    if (data.content_url.toLowerCase().endsWith('.mp4')) {
+                        content.innerHTML = `<video src="${data.content_url}" autoplay controls style="max-width: 100%; max-height: 80vh;"></video>`;
+                    } else {
+                        content.innerHTML = `<img src="${data.content_url}" style="max-width: 100%; max-height: 80vh;">`;
+                    }
+        
+                    modal.appendChild(content);
+                    document.body.appendChild(modal);
+        
+                    modal.onclick = () => {
+                        document.body.removeChild(modal);
+                    };
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        
+        document.querySelectorAll('.story-item').forEach(item => {
+            item.onclick = (e) => {
+                e.preventDefault();
+                const storyId = item.getAttribute('data-story-id');
+                viewStory(storyId);
+            };
+        });
+
+
+        function sharePostToWhatsApp(postId, imageUrl) {
+            // Get the current page URL
+            var postUrl = window.location.origin + '/post/' + postId;
+            
+            // Construct the WhatsApp share URL
+            var whatsappUrl = 'https://web.whatsapp.com/send?text=Check out this post on ChuckleX: ' + encodeURIComponent(postUrl);
+            
+            // Open WhatsApp in a new window
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function savePost(postId) {
+            fetch('/save_post/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({post_id: postId})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Post saved successfully!');
+                } else {
+                    alert('Error saving post: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving the post.');
+            });
+        }
+        
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        </script>
+        
+
+
+ <!-- Scripts
+    ================================================== -->
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>  
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+
+    <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.6/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.7.6/dist/js/uikit-icons.min.js"></script>
+</body>
+
+
+</html>
